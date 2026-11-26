@@ -1,0 +1,134 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "sku": "ELEC-TV-001",
+      "name": "Tivi Smart LED 55 inch Bảo hành",
+      "category": "Đồ điện tử",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 120,
+        "incoming": 50,
+        "allocated": 20,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 2,
+      "sku": "ELEC-MBL-002",
+      "name": "Lô linh kiện màn hình Smartphone",
+      "category": "Đồ điện tử",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 200,
+        "incoming": 80,
+        "allocated": 40,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 3,
+      "sku": "APP-WM-001",
+      "name": "Bo mạch Máy giặt Inverter",
+      "category": "Đồ gia dụng",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 85,
+        "incoming": 30,
+        "allocated": 15,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 4,
+      "sku": "APP-MW-002",
+      "name": "Lò vi sóng đổi mới bảo hành",
+      "category": "Đồ gia dụng",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 60,
+        "incoming": 40,
+        "allocated": 10,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 5,
+      "sku": "CLO-JKT-001",
+      "name": "Áo khoác gió đồng phục kỹ thuật",
+      "category": "Quần áo",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 300,
+        "incoming": 100,
+        "allocated": 50,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 6,
+      "sku": "CLO-SHR-002",
+      "name": "Trang phục bảo hộ lao động kho",
+      "category": "Quần áo",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 150,
+        "incoming": 50,
+        "allocated": 0,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 7,
+      "sku": "OFF-PPR-001",
+      "name": "Giấy in A4 & Phiếu bảo hành chuẩn",
+      "category": "Văn phòng phẩm",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 450,
+        "incoming": 150,
+        "allocated": 60,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 8,
+      "sku": "OFF-LBL-002",
+      "name": "Cuộn tem nhãn mã vạch niêm phong",
+      "category": "Văn phòng phẩm",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 220,
+        "incoming": 60,
+        "allocated": 20,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 9,
+      "sku": "FUR-CHR-001",
+      "name": "Ghế làm việc kỹ thuật viên bảo hành",
+      "category": "Nội thất",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 40,
+        "incoming": 25,
+        "allocated": 10,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 10,
+      "sku": "FUR-TBL-002",
+      "name": "Bàn kiểm định thiết bị chống tĩnh điện",
+      "category": "Nội thất",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 30,
+        "incoming": 15,
+        "allocated": 5,
+        "reserved": 0
+      }
+    }
+  ]
+}
