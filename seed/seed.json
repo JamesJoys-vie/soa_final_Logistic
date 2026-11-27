@@ -1,0 +1,418 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "sku": "ELEC-TV-001",
+      "name": "Tivi Smart LED 55 inch Bảo hành",
+      "category": "Đồ điện tử",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 120,
+        "incoming": 50,
+        "allocated": 20,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 2,
+      "sku": "ELEC-MBL-002",
+      "name": "Lô linh kiện màn hình Smartphone",
+      "category": "Đồ điện tử",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 200,
+        "incoming": 80,
+        "allocated": 40,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 3,
+      "sku": "APP-WM-001",
+      "name": "Bo mạch Máy giặt Inverter",
+      "category": "Đồ gia dụng",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 85,
+        "incoming": 30,
+        "allocated": 15,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 4,
+      "sku": "APP-MW-002",
+      "name": "Lò vi sóng đổi mới bảo hành",
+      "category": "Đồ gia dụng",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 60,
+        "incoming": 40,
+        "allocated": 10,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 5,
+      "sku": "CLO-JKT-001",
+      "name": "Áo khoác gió đồng phục kỹ thuật",
+      "category": "Quần áo",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 300,
+        "incoming": 100,
+        "allocated": 50,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 6,
+      "sku": "CLO-SHR-002",
+      "name": "Trang phục bảo hộ lao động kho",
+      "category": "Quần áo",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 150,
+        "incoming": 50,
+        "allocated": 0,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 7,
+      "sku": "OFF-PPR-001",
+      "name": "Giấy in A4 & Phiếu bảo hành chuẩn",
+      "category": "Văn phòng phẩm",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 450,
+        "incoming": 150,
+        "allocated": 60,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 8,
+      "sku": "OFF-LBL-002",
+      "name": "Cuộn tem nhãn mã vạch niêm phong",
+      "category": "Văn phòng phẩm",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 220,
+        "incoming": 60,
+        "allocated": 20,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 9,
+      "sku": "FUR-CHR-001",
+      "name": "Ghế làm việc kỹ thuật viên bảo hành",
+      "category": "Nội thất",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 40,
+        "incoming": 25,
+        "allocated": 10,
+        "reserved": 0
+      }
+    },
+    {
+      "id": 10,
+      "sku": "FUR-TBL-002",
+      "name": "Bàn kiểm định thiết bị chống tĩnh điện",
+      "category": "Nội thất",
+      "unit": "thùng",
+      "initial_stock": {
+        "on_hand": 30,
+        "incoming": 15,
+        "allocated": 5,
+        "reserved": 0
+      }
+    }
+  ],
+  "vehicles": [
+    {
+      "id": 1,
+      "plate": "51C-123.45",
+      "driver_name": "Nguyễn Văn An",
+      "status": "ARRIVING"
+    },
+    {
+      "id": 2,
+      "plate": "51D-234.56",
+      "driver_name": "Trần Minh Bảo",
+      "status": "ARRIVING"
+    },
+    {
+      "id": 3,
+      "plate": "59C-345.67",
+      "driver_name": "Lê Quốc Cường",
+      "status": "WAITING_UNLOAD"
+    },
+    {
+      "id": 4,
+      "plate": "50H-456.78",
+      "driver_name": "Phạm Thanh Dũng",
+      "status": "UNLOADING"
+    },
+    {
+      "id": 5,
+      "plate": "51C-567.89",
+      "driver_name": "Hoàng Gia Huy",
+      "status": "IDLE"
+    },
+    {
+      "id": 6,
+      "plate": "51D-678.90",
+      "driver_name": "Võ Đức Khang",
+      "status": "IDLE"
+    },
+    {
+      "id": 7,
+      "plate": "59C-789.01",
+      "driver_name": "Đặng Văn Long",
+      "status": "IDLE"
+    },
+    {
+      "id": 8,
+      "plate": "50H-890.12",
+      "driver_name": "Bùi Hữu Minh",
+      "status": "IDLE"
+    },
+    {
+      "id": 9,
+      "plate": "51C-901.23",
+      "driver_name": "Ngô Thành Nam",
+      "status": "WAITING_LOAD"
+    },
+    {
+      "id": 10,
+      "plate": "51D-012.34",
+      "driver_name": "Đỗ Hoàng Phúc",
+      "status": "LOADING"
+    },
+    {
+      "id": 11,
+      "plate": "59C-123.56",
+      "driver_name": "Trịnh Quang Sơn",
+      "status": "DEPARTED"
+    },
+    {
+      "id": 12,
+      "plate": "50H-234.67",
+      "driver_name": "Lý Minh Tâm",
+      "status": "DEPARTED"
+    }
+  ],
+  "trips": [
+    {
+      "id": 1,
+      "vehicle_id": 1,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-20T00:30:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 1,
+          "boxes": 50
+        },
+        {
+          "item_id": 5,
+          "boxes": 100
+        },
+        {
+          "item_id": 7,
+          "boxes": 150
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "vehicle_id": 2,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-20T01:00:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 2,
+          "boxes": 80
+        },
+        {
+          "item_id": 6,
+          "boxes": 50
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "vehicle_id": 3,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-20T01:15:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 3,
+          "boxes": 30
+        },
+        {
+          "item_id": 4,
+          "boxes": 40
+        },
+        {
+          "item_id": 8,
+          "boxes": 60
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "vehicle_id": 4,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-20T01:40:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 9,
+          "boxes": 25
+        },
+        {
+          "item_id": 10,
+          "boxes": 15
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "vehicle_id": 5,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-19T00:00:00.000000Z",
+      "closed_at": "2026-11-19T02:00:00.000000Z",
+      "lines": [
+        {
+          "item_id": 1,
+          "boxes": 40
+        },
+        {
+          "item_id": 5,
+          "boxes": 60
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "vehicle_id": 6,
+      "direction": "IN",
+      "destination": null,
+      "created_at": "2026-11-19T01:00:00.000000Z",
+      "closed_at": "2026-11-19T03:30:00.000000Z",
+      "lines": [
+        {
+          "item_id": 7,
+          "boxes": 120
+        },
+        {
+          "item_id": 8,
+          "boxes": 40
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "vehicle_id": 9,
+      "direction": "OUT",
+      "destination": "Phường Bến Thành, Quận 1",
+      "created_at": "2026-11-20T02:00:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 1,
+          "boxes": 20
+        },
+        {
+          "item_id": 2,
+          "boxes": 40
+        },
+        {
+          "item_id": 3,
+          "boxes": 15
+        },
+        {
+          "item_id": 4,
+          "boxes": 10
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "vehicle_id": 10,
+      "direction": "OUT",
+      "destination": "Phường Tân Định, Quận 1",
+      "created_at": "2026-11-20T02:30:00.000000Z",
+      "closed_at": null,
+      "lines": [
+        {
+          "item_id": 5,
+          "boxes": 50
+        },
+        {
+          "item_id": 7,
+          "boxes": 60
+        },
+        {
+          "item_id": 8,
+          "boxes": 20
+        },
+        {
+          "item_id": 9,
+          "boxes": 10
+        },
+        {
+          "item_id": 10,
+          "boxes": 5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "vehicle_id": 11,
+      "direction": "OUT",
+      "destination": "Phường Võ Thị Sáu, Quận 3",
+      "created_at": "2026-11-18T06:00:00.000000Z",
+      "closed_at": "2026-11-18T08:00:00.000000Z",
+      "lines": [
+        {
+          "item_id": 2,
+          "boxes": 30
+        },
+        {
+          "item_id": 6,
+          "boxes": 25
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "vehicle_id": 12,
+      "direction": "OUT",
+      "destination": "Phường 4, Quận 5",
+      "created_at": "2026-11-19T07:00:00.000000Z",
+      "closed_at": "2026-11-19T09:20:00.000000Z",
+      "lines": [
+        {
+          "item_id": 3,
+          "boxes": 10
+        },
+        {
+          "item_id": 9,
+          "boxes": 5
+        }
+      ]
+    }
+  ]
+}
