@@ -1,0 +1,38 @@
+@startuml sequence-02-race
+footer Phan Huy Bính - 524H0081
+title SD-2. Quản lý duyệt và nhân viên rút cùng lúc; hết 2 phút
+autonumber
+skinparam shadowing false
+hide footbox
+skinparam sequenceMessageAlign left
+actor "NV có thẩm quyền" as NV
+actor "Quản lý" as QL
+participant "Shipment" as SH
+database "shipment.db" as DB
+participant "Inventory" as INV
+
+note over NV, SH : Lần gán PENDING, hạn 2 phút. Mọi lời gọi của người dùng đi qua API Gateway.
+alt cả hai bấm cùng lúc trong 2 phút
+  par
+    QL -> SH : POST /assignments/{id}/confirm
+  else
+    NV -> SH : POST /assignments/{id}/withdraw
+  end
+  SH -> DB : UPDATE decision = CONFIRMED\nWHERE status = 'PENDING' AND decision IS NULL AND expires_at > now
+  DB --> SH : đổi 1 dòng (thắng)
+  SH -> DB : UPDATE decision = WITHDRAWN (cùng điều kiện)
+  DB --> SH : đổi 0 dòng (thua)
+  SH --> NV : 409 ASSIGNMENT_ALREADY_DECIDED
+  SH -> INV : POST /internal/reservations/{id}/commit
+  INV --> SH : 200
+  SH -> DB : UPDATE status = CONFIRMED; INSERT lượt đi; xe sang Chờ tải hàng
+  SH --> QL : 200 CONFIRMED
+  note right of SH : Nếu UPDATE của nhân viên tới trước\nthì ngược lại: WITHDRAWN, quản lý nhận 409
+else quá 2 phút, quản lý không phản hồi
+  SH -> SH : AssignmentExpiryWorker quét
+  SH -> DB : UPDATE decision = AUTO_APPROVED, decided_by = NULL\nWHERE ... AND expires_at <= now
+  SH -> INV : POST /internal/reservations/{id}/commit
+  INV --> SH : 200
+  SH -> DB : UPDATE status = AUTO_APPROVED, approval_type = TIMEOUT,\nresponsible_user = created_by; INSERT lượt đi; xe sang Chờ tải hàng
+end
+@enduml

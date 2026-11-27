@@ -1,0 +1,88 @@
+@startuml class-domain
+footer Phan Huy Bính - 524H0081
+' Class diagram of the domain layer: entities, rules, Strategy pattern
+hide empty members
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+}
+
+class Vehicle {
+  +id : int
+  +plate : str
+  +driver_name : str
+  +status : VehicleStatus
+  +/group : VehicleGroup
+  +/next_status : VehicleStatus
+  +ensure_can_move_to(target)
+  +ensure_assignable()
+}
+class Trip {
+  +id : int
+  +direction : TripDirection
+  +destination : str
+  +created_at : str
+  +closed_at : str
+}
+class Assignment {
+  +id : int
+  +destination : str
+  +created_by : str
+  +creator_role : Role
+  +status : AssignmentStatus
+  +expires_at : str
+  +decision : Decision
+  +decided_by : str
+  +approval_type : ApprovalType
+  +responsible_user : str
+  +/is_unfinished : bool
+  +/person_responsible : str
+  +ensure_withdrawable_by(user)
+  +conflict() : Conflict
+}
+class LineItem {
+  +item_id : int
+  +boxes : int
+}
+class CurrentUser {
+  +id : str
+  +role : Role
+  +/is_manager : bool
+}
+abstract class AssignmentPolicy {
+  +ttl_seconds : int
+  +{abstract} /timeout_decision : Decision
+}
+class ManagerPolicy {
+  +/timeout_decision : Decision
+}
+class AuthorizedStaffPolicy {
+  +/timeout_decision : Decision
+}
+class AssignmentPolicies {
+  +for_role(role) : AssignmentPolicy
+}
+enum Decision {
+  CONFIRMED
+  AUTO_APPROVED
+  REJECTED
+  WITHDRAWN
+  CANCELLED
+  +/approves : bool
+  +/approval_type : ApprovalType
+}
+
+Vehicle "1" -- "0..*" Trip
+Vehicle "1" -- "0..*" Assignment
+Assignment "0..1" -- "0..1" Trip
+Trip "1" *-- "1..*" LineItem
+Assignment "1" *-- "1..*" LineItem
+Assignment --> "0..1" Decision
+Assignment ..> CurrentUser
+AssignmentPolicy <|-- ManagerPolicy
+AssignmentPolicy <|-- AuthorizedStaffPolicy
+AssignmentPolicies *-- "2" AssignmentPolicy
+AssignmentPolicy ..> Decision
+@enduml

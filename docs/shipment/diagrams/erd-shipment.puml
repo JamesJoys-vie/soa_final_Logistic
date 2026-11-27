@@ -1,0 +1,90 @@
+@startuml erd-shipment
+footer Phan Huy Bính - 524H0081
+' ERD (crow's foot). Solid: foreign key inside shipment.db. Dashed: ID reference to another service's database.
+hide circle
+set separator none
+hide methods
+skinparam shadowing false
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+}
+
+package "shipment.db" {
+  entity vehicles {
+    * id : INTEGER <<PK>>
+    --
+    * plate : TEXT <<UQ>>
+    * driver_name : TEXT
+    * status : TEXT
+  }
+  entity vehicle_status_history {
+    * id : INTEGER <<PK>>
+    --
+    * vehicle_id : INTEGER <<FK>>
+    * from_status : TEXT
+    * to_status : TEXT
+    changed_by : TEXT
+    * changed_at : TEXT
+  }
+  entity trips {
+    * id : INTEGER <<PK>>
+    --
+    * vehicle_id : INTEGER <<FK>>
+    * direction : TEXT
+    destination : TEXT
+    assignment_id : INTEGER <<FK, UQ>>
+    * created_at : TEXT
+    closed_at : TEXT
+  }
+  entity trip_lines {
+    * trip_id : INTEGER <<PK, FK>>
+    * item_id : INTEGER <<PK>>
+    --
+    * boxes : INTEGER
+  }
+  entity assignments {
+    * id : INTEGER <<PK>>
+    --
+    * vehicle_id : INTEGER <<FK>>
+    * destination : TEXT
+    * created_by : TEXT
+    * creator_role : TEXT
+    * status : TEXT
+    expires_at : TEXT
+    decision : TEXT
+    decided_by : TEXT
+    decided_at : TEXT
+    approval_type : TEXT
+    responsible_user : TEXT
+    * created_at : TEXT
+  }
+  entity assignment_lines {
+    * assignment_id : INTEGER <<PK, FK>>
+    * item_id : INTEGER <<PK>>
+    --
+    * boxes : INTEGER
+  }
+}
+package "inventory.db" #F5F5F5 {
+  entity items {
+    * id : INTEGER <<PK>>
+  }
+}
+package "auth.db" #F5F5F5 {
+  entity users {
+    * id <<PK>>
+  }
+}
+
+vehicles ||--o{ vehicle_status_history
+vehicles ||--o{ trips
+vehicles ||--o{ assignments
+assignments |o--o| trips
+trips ||--|{ trip_lines
+assignments ||--|{ assignment_lines
+items ||..o{ trip_lines
+items ||..o{ assignment_lines
+users ||..o{ assignments
+users |o..o{ vehicle_status_history
+@enduml
