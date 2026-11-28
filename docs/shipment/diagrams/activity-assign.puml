@@ -1,0 +1,64 @@
+@startuml activity-assign
+footer Phan Huy Bính - 524H0081
+' Activity with swimlanes: outbound assignment, from creation to its final state
+skinparam shadowing false
+skinparam ActivityBackgroundColor White
+skinparam ActivityBorderColor Black
+skinparam defaultTextAlignment center
+
+|Người gán|
+start
+:Chọn xe trống, vị trí đích,
+các dòng hàng (số thùng);
+|Shipment|
+if (Xe đang trống và\nchưa có lần gán PENDING?) then ([không])
+  :Trả 409;
+  stop
+else ([có])
+endif
+:Tạo bản ghi PENDING
+(khóa xe);
+|Inventory|
+:Giữ chỗ trọn gói
+theo assignment_id;
+if (Đủ mọi dòng hàng?) then ([thiếu])
+  |Shipment|
+  :Xóa bản ghi, trả 409
+  kèm dòng thiếu;
+  stop
+else ([đủ])
+endif
+|Shipment|
+:expires_at = bây giờ + 30 giây (Quản lý)
+hoặc 2 phút (NV có thẩm quyền);
+|Người gán|
+:Hộp xác nhận 30 giây
+hoặc chờ duyệt 2 phút;
+|Shipment|
+:Sự kiện đầu tiên: đồng ý,
+từ chối, rút hoặc hết hạn; <<input>>
+:Giành quyền quyết định:
+UPDATE ... WHERE status = 'PENDING'
+AND decision IS NULL;
+note right
+  Duyệt, từ chối, rút, hết hạn
+  cùng lúc: một bên thắng,
+  bên đến sau nhận 409
+end note
+if (Quyết định?) then ([CONFIRMED hoặc\nAUTO_APPROVED])
+  |Inventory|
+  :Chốt giữ chỗ
+  (reserved -> allocated);
+  |Shipment|
+  :Đổi trạng thái lần gán,
+  tạo lượt đi,
+  xe sang Chờ tải hàng;
+else ([REJECTED hoặc\nWITHDRAWN])
+  |Inventory|
+  :Nhả giữ chỗ;
+  |Shipment|
+  :Đổi trạng thái lần gán,
+  mở khóa xe;
+endif
+stop
+@enduml

@@ -1,0 +1,69 @@
+@startuml sequence-01-manager
+footer Phan Huy Bính - 524H0081
+title SD-1. Quản lý gán hàng và xác nhận trong 30 giây
+autonumber
+skinparam shadowing false
+hide footbox
+skinparam sequenceMessageAlign left
+actor "Quản lý" as QL
+participant "Frontend" as FE
+participant "Shipment" as SH
+database "shipment.db" as DB
+participant "Inventory" as INV
+
+QL -> FE : xe trống, vị trí đích, các dòng hàng
+note over QL, SH : Mọi lời gọi của Frontend đi qua API Gateway (kiểm JWT, vai trò).
+FE -> SH : POST /assignments
+activate SH
+SH -> DB : BEGIN IMMEDIATE: kiểm xe trống, chưa có PENDING;\nINSERT PENDING; COMMIT
+SH -> INV : POST /internal/reservations
+alt thiếu ít nhất một dòng
+  INV --> SH : 409 + dòng thiếu
+  SH -> DB : DELETE bản ghi
+  SH --> FE : 409 + dòng thiếu
+  FE --> QL : bảng dòng thiếu, chỉnh lại hàng gán
+else đủ hàng
+  INV --> SH : 201
+  SH -> DB : UPDATE expires_at = now + 30 giây
+  SH --> FE : 201 PENDING, expires_at, server_time
+  deactivate SH
+  FE --> QL : hộp xác nhận đếm ngược 30 giây
+  alt Đồng ý trong hạn
+    QL -> FE : Đồng ý
+    FE -> SH : POST /assignments/{id}/confirm
+    activate SH
+    SH -> DB : UPDATE decision = CONFIRMED\nWHERE status = 'PENDING' AND decision IS NULL\nAND expires_at > now
+    SH -> INV : POST /internal/reservations/{id}/commit
+    activate INV
+    INV --> SH : 200
+    deactivate INV
+    SH -> DB : UPDATE status = CONFIRMED;\nINSERT lượt đi; xe sang Chờ tải hàng
+    SH --> FE : 200 CONFIRMED
+    deactivate SH
+  else Từ chối trong hạn
+    QL -> FE : Từ chối
+    FE -> SH : POST /assignments/{id}/reject
+    activate SH
+    SH -> DB : UPDATE decision = REJECTED (cùng điều kiện)
+    SH -> INV : POST /internal/reservations/{id}/release
+    activate INV
+    INV --> SH : 200
+    deactivate INV
+    SH -> DB : UPDATE status = REJECTED
+    SH --> FE : 200 REJECTED
+    deactivate SH
+    FE --> QL : quay lại trang gán, giữ dữ liệu
+  else hết 30 giây
+    SH -> SH : AssignmentExpiryWorker quét
+    activate SH
+    SH -> DB : UPDATE decision = REJECTED\nWHERE ... AND expires_at <= now
+    SH -> INV : POST /internal/reservations/{id}/release
+    activate INV
+    INV --> SH : 200
+    deactivate INV
+    SH -> DB : UPDATE status = REJECTED
+    deactivate SH
+    FE --> QL : quay lại trang gán, giữ dữ liệu
+  end
+end
+@enduml

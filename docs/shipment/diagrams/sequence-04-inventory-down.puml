@@ -1,0 +1,29 @@
+@startuml sequence-04-inventory-down
+footer Phan Huy Bính - 524H0081
+title SD-4. Inventory lỗi khi chốt: CONFIRMED chỉ sau khi commit thành công
+autonumber
+skinparam shadowing false
+hide footbox
+skinparam sequenceMessageAlign left
+actor "Quản lý" as QL
+participant "Shipment" as SH
+database "shipment.db" as DB
+participant "Inventory" as INV
+
+QL -> SH : POST /assignments/{id}/confirm
+activate SH
+SH -> DB : UPDATE decision = CONFIRMED (giành quyền, vẫn PENDING)
+SH ->x INV : POST /internal/reservations/{id}/commit
+SH ->x INV : gọi lại một lần
+SH --> QL : 502 hoặc 504
+deactivate SH
+note over SH, INV : Lần gán vẫn PENDING, xe vẫn khóa, hàng vẫn ở reserved.\nRút, từ chối, hết hạn lúc này đều nhận 409.
+loop mỗi vài giây, đến khi Inventory trả lời
+  SH -> SH : DecisionRetryWorker quét
+  activate SH
+  SH -> INV : POST /internal/reservations/{id}/commit (idempotent)
+  INV --> SH : 200
+  SH -> DB : UPDATE status = CONFIRMED; INSERT lượt đi; xe sang Chờ tải hàng
+  deactivate SH
+end
+@enduml

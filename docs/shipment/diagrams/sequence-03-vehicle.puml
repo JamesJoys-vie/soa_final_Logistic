@@ -1,0 +1,38 @@
+@startuml sequence-03-vehicle
+footer Phan Huy Bính - 524H0081
+title SD-3. Xe thả hàng xong và xe rời kho
+autonumber
+skinparam shadowing false
+hide footbox
+skinparam sequenceMessageAlign left
+actor "Quản lý hoặc\nNV có thẩm quyền" as U
+participant "Shipment" as SH
+database "shipment.db" as DB
+participant "Inventory" as INV
+
+note over U, SH : Lời gọi của người dùng đi qua API Gateway.
+U -> SH : PATCH /vehicles/{id}/status {IDLE}
+activate SH
+SH -> DB : đọc xe (Đang thả hàng) và lượt đến chưa đóng
+SH -> INV : POST /internal/receipts {trip_id, lines}
+alt lỗi hoặc quá hạn (đã gọi lại một lần)
+  INV --> SH : 5xx / không trả lời
+  SH --> U : 502 hoặc 504, xe giữ nguyên trạng thái
+else thành công (idempotent theo trip_id)
+  INV --> SH : 200 (incoming sang on_hand)
+  SH -> DB : UPDATE vehicles SET status = 'IDLE'\nWHERE status = 'UNLOADING'; đóng lượt; ghi lịch sử
+  SH --> U : 200
+end
+deactivate SH
+
+U -> SH : PATCH /vehicles/{id}/status {DEPARTED}
+activate SH
+SH -> DB : đọc xe (Đang tải hàng) và lượt đi chưa đóng + dòng hàng
+SH -> INV : POST /internal/departures {trip_id, lines}
+activate INV
+INV --> SH : 200 (trừ allocated và on_hand)
+deactivate INV
+SH -> DB : UPDATE vehicles SET status = 'DEPARTED'\nWHERE status = 'LOADING'; đóng lượt; ghi lịch sử
+SH --> U : 200
+deactivate SH
+@enduml

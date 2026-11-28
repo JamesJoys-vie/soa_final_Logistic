@@ -1,0 +1,91 @@
+@startuml class-layers
+footer Phan Huy Bính - 524H0081
+' Class diagram of service and infrastructure classes: inheritance, realization, dependency
+hide empty members
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+}
+
+package workers {
+  abstract class PeriodicWorker {
+    +{abstract} run_once() : int
+    +tick()
+  }
+  class AssignmentExpiryWorker
+  class DecisionRetryWorker
+}
+package services {
+  class AssignmentService {
+    +find(user, status)
+    +create(user, vehicle_id, destination, lines)
+    +confirm(user, id)
+    +reject(user, id)
+    +withdraw(user, id)
+    +expire_due() : int
+    +complete_unfinished() : int
+  }
+  class VehicleService {
+    +find(statuses)
+    +change_status(user, id, target)
+  }
+  class TripService {
+    +find(direction)
+    +get(id)
+  }
+}
+package repositories {
+  class UnitOfWork {
+    +vehicles
+    +trips
+    +assignments
+  }
+  class BaseRepository
+  class VehicleRepository {
+    +move(id, source, target) : bool
+  }
+  class TripRepository
+  class AssignmentRepository {
+    +add(...) : int
+    +start_clock(id, expires_at) : bool
+    +claim_by_user(...) : bool
+    +claim_on_timeout(...) : bool
+    +finalize(assignment) : bool
+  }
+}
+package clients {
+  interface InventoryGateway {
+    +reserve(assignment_id, lines)
+    +commit(assignment_id)
+    +release(assignment_id)
+    +receive(trip_id, lines)
+    +depart(trip_id, lines)
+  }
+  class ServiceClient {
+    #_post(path, payload)
+  }
+  class InventoryClient
+}
+class FakeInventory <<dev>>
+
+PeriodicWorker <|-- AssignmentExpiryWorker
+PeriodicWorker <|-- DecisionRetryWorker
+AssignmentExpiryWorker --> AssignmentService
+DecisionRetryWorker --> AssignmentService
+AssignmentService ..> UnitOfWork
+VehicleService ..> UnitOfWork
+TripService ..> UnitOfWork
+AssignmentService --> InventoryGateway
+VehicleService --> InventoryGateway
+UnitOfWork *-- VehicleRepository
+UnitOfWork *-- TripRepository
+UnitOfWork *-- AssignmentRepository
+BaseRepository <|-- VehicleRepository
+BaseRepository <|-- TripRepository
+BaseRepository <|-- AssignmentRepository
+ServiceClient <|-- InventoryClient
+InventoryGateway <|.. InventoryClient
+InventoryGateway <|.. FakeInventory
+@enduml

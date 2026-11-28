@@ -1,0 +1,71 @@
+@startuml use-case-shipment
+footer Phan Huy Bính - 524H0081
+' Use cases of the Shipment service. UML 2.5 notation:
+'   association: plain line;  include / extend: dashed, open arrow;  generalization: hollow triangle
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+}
+
+actor "Quản lý" as QL
+actor "Nhân viên có\nthẩm quyền" as NV
+actor "Thời gian" as TIME
+actor "Inventory Service" as INV
+
+rectangle "Shipment Service" {
+  usecase "UC-S01\nXem lượt xe đến / đi\nvà hàng hóa" as S01
+  usecase "UC-S02\nXem trạng thái xe" as S02
+  usecase S03 as "UC-S03
+Cập nhật trạng thái xe
+--
+extension points
+thả hàng xong
+xe rời kho"
+  usecase "UC-S04\nGhi nhận nhập kho" as S04
+  usecase "UC-S05\nGhi nhận xuất kho" as S05
+  usecase "//UC-S06//\n//Gán hàng cho xe trống//" as S06
+  usecase "UC-S06a\nGán hàng và xác nhận\ntrong 30 giây" as S06a
+  usecase "UC-S06b\nGán hàng chờ duyệt\ntrong 2 phút" as S06b
+  usecase "UC-S07\nGiữ chỗ hàng trọn gói" as S07
+  usecase "UC-S08\nDuyệt lần gán của nhân viên\ncó thẩm quyền" as S08
+  usecase S09 as "UC-S09
+Theo dõi lần gán của mình
+--
+extension points
+đang chờ duyệt"
+  usecase "UC-S10\nRút lần gán" as S10
+  usecase "UC-S11\nXử lý lần gán quá hạn" as S11
+  usecase "UC-S12\nChốt hoặc nhả giữ chỗ" as S12
+}
+
+QL -- S01
+QL -- S02
+QL -- S03
+QL -- S06a
+QL -- S08
+NV -- S02
+NV -- S03
+NV -- S06b
+NV -- S09
+TIME -- S11
+
+S03 <.. S04 : <<extend>>\n(thả hàng xong)
+S03 <.. S05 : <<extend>>\n(xe rời kho)
+S06a --|> S06
+S06b --|> S06
+S06 ..> S07 : <<include>>
+S06a ..> S12 : <<include>>
+S08 ..> S12 : <<include>>
+S09 <.. S10 : <<extend>>\n(đang chờ duyệt)
+S10 ..> S12 : <<include>>
+S11 ..> S12 : <<include>>
+
+S04 -- INV
+S05 -- INV
+S07 -- INV
+S12 -- INV
+
+@enduml

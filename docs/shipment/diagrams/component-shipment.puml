@@ -1,0 +1,39 @@
+@startuml component-shipment
+footer Phan Huy Bính - 524H0081
+' Component diagram: Shipment within the microservices system and its inner layers
+skinparam shadowing false
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor White
+  BorderColor Black
+}
+
+component "API Gateway\n:8000" as GW
+component "Inventory\n:8002" as INV
+component "Prometheus" as PROM
+
+package "Shipment :8003" {
+  component routers
+  component schemas
+  component services
+  component workers
+  component domain
+  component repositories
+  component clients
+}
+database "shipment.db\n(SQLite)" as DB
+
+GW --> routers : REST /vehicles, /trips,\n/assignments + JWT
+PROM --> routers : GET /metrics
+routers ..> schemas
+routers ..> services
+workers ..> services
+services ..> domain
+services ..> repositories
+services ..> clients
+repositories ..> domain
+clients ..> domain
+schemas ..> domain
+repositories --> DB : SQL
+clients --> INV : REST /internal/*\n+ X-Internal-Key
+@enduml

@@ -1,0 +1,28 @@
+@startuml state-assignment
+footer Phan Huy Bính - 524H0081
+' Assignment state machine. Labels: event [guard] / action. after(...) is a time event.
+skinparam shadowing false
+skinparam state {
+  BackgroundColor White
+  BorderColor Black
+}
+state check <<choice>>
+state PENDING
+state CONFIRMED
+state REJECTED
+state WITHDRAWN
+state AUTO_APPROVED
+
+[*] --> check : / khóa xe, Inventory giữ chỗ trọn gói
+check --> [*] : [thiếu hàng] / trả 409
+check --> PENDING : [đủ hàng]
+PENDING --> CONFIRMED : đồng ý / commit, tạo lượt đi
+PENDING --> REJECTED : từ chối / release
+PENDING --> REJECTED : after(30 giây) [Quản lý tạo] / release
+PENDING --> WITHDRAWN : rút [NV có thẩm quyền tạo] / release
+PENDING --> AUTO_APPROVED : after(2 phút) [NV có thẩm quyền tạo]\n/ commit, tạo lượt đi
+CONFIRMED --> [*]
+REJECTED --> [*]
+WITHDRAWN --> [*]
+AUTO_APPROVED --> [*]
+@enduml

@@ -1,0 +1,28 @@
+@startuml state-vehicle
+footer Phan Huy Bính - 524H0081
+' Vehicle state machine. Labels: event [guard] / action
+skinparam shadowing false
+skinparam state {
+  BackgroundColor White
+  BorderColor Black
+}
+state "Lượt đến" as IN {
+  state "Đang đến" as ARRIVING
+  state "Chờ thả hàng" as WAITING_UNLOAD
+  state "Đang thả hàng" as UNLOADING
+  ARRIVING --> WAITING_UNLOAD : cập nhật trạng thái
+  WAITING_UNLOAD --> UNLOADING : cập nhật trạng thái
+}
+state "Đang trống" as IDLE
+state "Lượt đi" as OUT {
+  state "Chờ tải hàng" as WAITING_LOAD
+  state "Đang tải hàng" as LOADING
+  state "Đã rời kho" as DEPARTED
+  WAITING_LOAD --> LOADING : cập nhật trạng thái
+  LOADING --> DEPARTED : cập nhật trạng thái / Inventory.departures (tồn thực tế giảm)
+}
+[*] --> ARRIVING
+UNLOADING --> IDLE : cập nhật trạng thái / Inventory.receipts (tồn thực tế tăng)
+IDLE --> WAITING_LOAD : lần gán có hiệu lực [CONFIRMED hoặc AUTO_APPROVED] / tạo lượt đi
+DEPARTED --> [*]
+@enduml
